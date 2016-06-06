@@ -1,0 +1,11 @@
+name: esting
+tilemap:
+    [
+        [ { tilenumber: 3, overrideColor: {red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0 } }, { tilenumber: 2 }, { tilenumber: 1 } ],
+        [ { tilenumber: 19, overrideColor: {red: 1.0, green: 0.0, blue: 1.0, alpha: 1.0 } }, { tilenumber: 2 }, { tilenumber: 3 } ]
+    ]
+tileWidth: 16
+tileHeight: 32
+tileImage: textures/Mono_0.png
+xOffset: 25
+yOffset: 30

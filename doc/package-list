@@ -1,0 +1,11 @@
+com.tangledworlds.jgl2d
+com.tangledworlds.jgl2d.event
+com.tangledworlds.jgl2d.event.handler
+com.tangledworlds.jgl2d.examples
+com.tangledworlds.jgl2d.exception
+com.tangledworlds.jgl2d.graphics
+com.tangledworlds.jgl2d.graphics.window
+com.tangledworlds.jgl2d.math
+com.tangledworlds.jgl2d.program
+com.tangledworlds.jgl2d.shader
+com.tangledworlds.jgl2d.util
