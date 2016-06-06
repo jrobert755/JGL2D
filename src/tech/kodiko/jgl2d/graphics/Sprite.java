@@ -20,8 +20,6 @@ public class Sprite extends Renderable{
 	private boolean clockwiseRotation;
 	private Vector4 overrideColor;
 	
-	private Object lock = new Object();
-	
 	/*
 	 * When using GL_TRIANGLE_STRIP, do the vertices in the following order:
 	 * 
@@ -72,7 +70,7 @@ public class Sprite extends Renderable{
 	}
 	
 	private void updateBuffer(){
-		synchronized(this.lock){
+		synchronized(this){
 			int vertMaxX = Math.round(vertWidth + vertX);
 			int vertMaxY = Math.round(vertHeight + vertY);
 			
@@ -91,11 +89,6 @@ public class Sprite extends Renderable{
 				vertexThree = new Vector2(this.vertX, this.vertY);
 				vertexFour = new Vector2(vertMaxX, this.vertY);
 			}
-			
-			/*buffer.put(new float[]{ vertexOne.getX(), vertexOne.getY(), texture.normalizeX(this.uvX), texture.normalizeY(this.uvMaxY) });
-			buffer.put(new float[]{ vertexTwo.getX(), vertexTwo.getY(), texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvMaxY) });
-			buffer.put(new float[]{ vertexThree.getX(), vertexThree.getY(), texture.normalizeX(this.uvX), texture.normalizeY(this.uvY) });
-			buffer.put(new float[]{ vertexFour.getX(), vertexFour.getY(), texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvY) });*/
 			
 			Vector2 uvOne, uvTwo, uvThree, uvFour;
 			uvOne = new Vector2(texture.normalizeX(this.uvX), texture.normalizeY(this.uvMaxY));
@@ -117,7 +110,7 @@ public class Sprite extends Renderable{
 	}
 	
 	public void addPosition(float x, float y){
-		synchronized(this.lock){
+		synchronized(this){
 			vertX += x;
 			vertY += y;
 			this.updateBuffer();
@@ -129,7 +122,7 @@ public class Sprite extends Renderable{
 	}
 	
 	public void subtractPosition(float x, float y){
-		synchronized(this.lock){
+		synchronized(this){
 			vertX -= x;
 			vertY -= y;
 			this.updateBuffer();
@@ -138,7 +131,7 @@ public class Sprite extends Renderable{
 	
 	@Override
 	public float[] getData(){
-		synchronized(this.lock){
+		synchronized(this){
 			float arr[] = new float[Sprite.floatsPerVertex() * this.vertexCount()];
 			buffer.get(arr);
 			buffer.flip();
@@ -164,7 +157,7 @@ public class Sprite extends Renderable{
 	}
 
 	public void setRotation(float rotation) {
-		synchronized(this.lock){
+		synchronized(this){
 			this.rotation = rotation;
 			this.updateBuffer();
 		}

@@ -20,6 +20,7 @@ public class TileMap extends Renderable {
 	private float data[];
 	
 	private Sprite[][] tilesNew;
+	private int xOffset, yOffset;
 	
 	public TileMap(TileSheet tilesheet, int[][] tiles, int xOffset, int yOffset, Vector4[][] overrideColors){
 		this.tilesheet = tilesheet;
@@ -28,14 +29,16 @@ public class TileMap extends Renderable {
 		
 		this.tilesNew = new Sprite[tiles.length][];
 		this.data = new float[tiles.length * tiles[0].length * Sprite.floatsPerVertex() * 4];
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 
 		for(int j = 0; j < tiles.length; j++){
 			if(tiles[j].length != tiles[0].length) throw new TileMapSizeException("Tilemap rows must be the same size!");
 			this.tilesNew[j] = new Sprite[tiles[j].length];
 			for(int i = 0; i < tiles[j].length; i++){
 				Vector2 uvCoords = tilesheet.getTileUV(tiles[j][i]);
-				int vertX = i * tileWidth + xOffset;
-				int vertY = j * tileHeight + yOffset;
+				int vertX = i * tileWidth;
+				int vertY = j * tileHeight;
 				Sprite sprite = new Sprite(tilesheet.getTexture(), vertX, vertY, tileWidth, tileHeight, (int)uvCoords.getX(), (int)uvCoords.getY(), tileWidth, tileHeight);
 				if(overrideColors != null && overrideColors.length > j && overrideColors[j] != null && overrideColors[j].length > i && overrideColors[j][i] != null){
 					sprite.setOverrideColor(overrideColors[j][i]);
@@ -52,47 +55,51 @@ public class TileMap extends Renderable {
 	}
 	
 	public void updateTile(int x, int y){
-		int offset = (y * this.tilesNew[0].length) + x;
-		offset *= (Sprite.floatsPerVertex() * 4);
-		float temp[] = this.tilesNew[y][x].getData();
-		for(int i = 0; i < temp.length; i++){
-			this.data[offset+i] = temp[i];
+		synchronized(this){
+			int offset = (y * this.tilesNew[0].length) + x;
+			offset *= (Sprite.floatsPerVertex() * 4);
+			float temp[] = this.tilesNew[y][x].getData();
+			for(int i = 0; i < temp.length; i++){
+				if((i % 8) == 0) temp[i] += this.xOffset;
+				else if((i % 8) == 1) temp[i] += this.yOffset;
+				this.data[offset+i] = temp[i];
+			}
 		}
 	}
 	
 	@Override
 	public float[] getData() {
-		return this.data;
+		synchronized(this){
+			return this.data;
+		}
 	}
 
 	@Override
 	public void render(int offset) {
-		for(int j = 0; j < this.tilesNew.length; j++){
-			Sprite[] curRow = this.tilesNew[j];
-			for(int i = 0; i < curRow.length; i++){
-				curRow[i].render(offset);
-				offset += 4;
+		synchronized(this){
+			for(int j = 0; j < this.tilesNew.length; j++){
+				Sprite[] curRow = this.tilesNew[j];
+				for(int i = 0; i < curRow.length; i++){
+					curRow[i].render(offset);
+					offset += 4;
+				}
 			}
 		}
 	}
 
 	@Override
 	public int vertexCount() {
-		//return this.tiles.size() * 4;
 		return this.tilesNew.length * this.tilesNew[0].length * 4;
 	}
 
 	@Override
 	public void destroy(){
-		/*this.tilesheet.destroy();
-		for(int i = 0; i < this.tiles.size(); i++){
-			this.tiles.get(i).destroy();
-		}*/
-		
-		for(int j = 0; j < this.tilesNew.length; j++){
-			Sprite[] curRow = this.tilesNew[j];
-			for(int i = 0; i < curRow.length; i++){
-				curRow[i].destroy();
+		synchronized(this){
+			for(int j = 0; j < this.tilesNew.length; j++){
+				Sprite[] curRow = this.tilesNew[j];
+				for(int i = 0; i < curRow.length; i++){
+					curRow[i].destroy();
+				}
 			}
 		}
 	}

@@ -7,5 +7,5 @@ tilemap:
 tileWidth: 16
 tileHeight: 32
 tileImage: textures/Mono_0.png
-xOffset: 25
-yOffset: 30
+xOffset: 50
+yOffset: 200
