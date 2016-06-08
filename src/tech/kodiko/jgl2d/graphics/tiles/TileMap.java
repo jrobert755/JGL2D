@@ -125,18 +125,22 @@ public class TileMap extends Renderable {
 			
 			int xOffset = 0;
 			if(attributes.containsKey("xOffset")){
-				xOffset = (int) attributes.get("xOffset");
+				//xOffset = (int) attributes.get("xOffset");
+				xOffset = (Integer) attributes.get("xOffset");
 			}
 			int yOffset = 0;
 			if(attributes.containsKey("yOffset")){
-				yOffset = (int) attributes.get("yOffset");
+				//yOffset = (int) attributes.get("yOffset");
+				yOffset = (Integer) attributes.get("yOffset");
 			}
 			
-			int tileWidth = (int) attributes.get("tileWidth");
-			int tileHeight = (int) attributes.get("tileHeight");
+			//int tileWidth = (int) attributes.get("tileWidth");
+			//int tileHeight = (int) attributes.get("tileHeight");
+			int tileWidth = (Integer) attributes.get("tileWidth");
+			int tileHeight = (Integer) attributes.get("tileHeight");
 			String tileImage = (String) attributes.get("tileImage");
 			
-			Texture texture = ImageLoader.loadTexture(ResourceLoader.getResourceFile(tileImage));
+			Texture texture = ImageLoader.loadTexture(ResourceLoader.getResourceInputStream(tileImage));
 			if(texture == null) return null;
 			
 			Object tilemapTest = attributes.get("tilemap");

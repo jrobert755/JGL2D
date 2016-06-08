@@ -3,6 +3,7 @@ package tech.kodiko.jgl2d.util;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
@@ -38,6 +39,23 @@ public class ImageLoader {
 	public static Texture loadTexture(File file){
 		try {
 			BufferedImage image = ImageIO.read(file);
+			int width = image.getWidth();
+			int height = image.getHeight();
+			int data[] = new int[width * height];
+			
+			image.getRGB(0, 0, width, height, data, 0, width);
+			ImageLoader.convertARGBtoRGBA(data);
+			data = ImageLoader.flipData(data, width, height);
+			Texture texture = new Texture(data, width, height);
+			return texture;
+		} catch (IOException e) {
+			return null;
+		}
+	}
+	
+	public static Texture loadTexture(InputStream stream){
+		try {
+			BufferedImage image = ImageIO.read(stream);
 			int width = image.getWidth();
 			int height = image.getHeight();
 			int data[] = new int[width * height];

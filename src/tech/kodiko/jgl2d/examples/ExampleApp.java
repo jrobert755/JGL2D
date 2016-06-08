@@ -43,7 +43,7 @@ public class ExampleApp extends LWJGLApplication {
 		
 		window.setRenderer(renderer);
 		
-		testingTexture = ImageLoader.loadTexture(ResourceLoader.getResourceFile("textures/uvgrid.png"));
+		testingTexture = ImageLoader.loadTexture(ResourceLoader.getResourceInputStream("textures/uvgrid.png"));
 		
 		Sprite testSprite1 = new Sprite(testingTexture, 200, 200, 300, 300, 512, 512);
 		Sprite testSprite2 = new Sprite(testingTexture, 64, 64, 64, 64, 50, 50, 64, 64);
