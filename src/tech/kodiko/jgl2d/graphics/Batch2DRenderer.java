@@ -24,6 +24,7 @@ public class Batch2DRenderer extends Renderer{
 	private int vboHandle;
 	private GLSLProgram program;
 	private Vector2 camera;
+	private Vector4 clearColor;
 	
 	public Batch2DRenderer(GLSLProgram program){
 		super();
@@ -80,20 +81,23 @@ public class Batch2DRenderer extends Renderer{
 	public void render(){
 		synchronized(this.program){
 			if(this.vaoHandle == -1 || this.vboHandle == -1) throw new UninitializedException("Batch renderer uninitialized!");
-			
+			GL11.glClearColor(this.clearColor.getX(), this.clearColor.getY(), this.clearColor.getZ(), this.clearColor.getW());
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 			
 			if(renderables.size() == 0) return;
 			
-			program.begin();
+			/*program.begin();
 			this.program.setCameraPosition(this.camera);
-			program.setSampler(0);
+			program.setSampler(0);*/
 			
 			ArrayList<Float> values = new ArrayList<Float>();
 			
 			Object[] ren = this.renderables.toArray();
 			for(int i = 0; i < ren.length; i++){
 				Renderable r = (Renderable) ren[i];
+				if(r instanceof RenderArea){
+					((RenderArea)r).renderToTexture();
+				}
 				float data[] = r.getData();
 				for(int j = 0; j < data.length; j++) values.add(data[j]);
 			}
@@ -107,7 +111,12 @@ public class Batch2DRenderer extends Renderer{
 			buffer.put(data);
 			buffer.flip();
 			
+			program.begin();
+			this.program.setCameraPosition(this.camera);
+			program.setSampler(0);
+			
 			GL30.glBindVertexArray(this.vaoHandle);
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboHandle);
 			
 			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_DYNAMIC_DRAW);
 			
@@ -119,6 +128,7 @@ public class Batch2DRenderer extends Renderer{
 				location += r.vertexCount();
 			}
 			
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 			GL30.glBindVertexArray(0);
 			
 			program.end();
@@ -139,7 +149,8 @@ public class Batch2DRenderer extends Renderer{
 	}
 	
 	public void setClearColor(float red, float green, float blue, float alpha){
-		GL11.glClearColor(red, green, blue, alpha);
+		//GL11.glClearColor(red, green, blue, alpha);
+		this.clearColor = new Vector4(red, green, blue, alpha);
 	}
 	
 	public void setCamera(Vector2 camera){
@@ -160,5 +171,13 @@ public class Batch2DRenderer extends Renderer{
 		data[6] = overrideColor.getZ();
 		data[7] = overrideColor.getW();
 		return data;
+	}
+
+	public int getVaoHandle() {
+		return vaoHandle;
+	}
+
+	public int getVboHandle() {
+		return vboHandle;
 	}
 }

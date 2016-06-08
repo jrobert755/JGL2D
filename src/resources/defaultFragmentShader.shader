@@ -1,6 +1,6 @@
 #version 330
 
-out vec4 colorOut;
+layout(location = 0)out vec4 colorOut;
 
 in vec2 uvCoord;
 in vec4 overrideColor;

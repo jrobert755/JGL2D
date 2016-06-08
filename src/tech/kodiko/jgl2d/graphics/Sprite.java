@@ -91,10 +91,18 @@ public class Sprite extends Renderable{
 			}
 			
 			Vector2 uvOne, uvTwo, uvThree, uvFour;
-			uvOne = new Vector2(texture.normalizeX(this.uvX), texture.normalizeY(this.uvMaxY));
+			/*uvOne = new Vector2(texture.normalizeX(this.uvX), texture.normalizeY(this.uvMaxY));
 			uvTwo = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvMaxY));
 			uvThree = new Vector2(texture.normalizeX(this.uvX), texture.normalizeY(this.uvY));
-			uvFour = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvY));
+			uvFour = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvY));*/
+			/*uvOne = new Vector2(texture.normalizeX(this.uvX), texture.normalizeY(this.uvY));
+			uvTwo = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvY));
+			uvThree = new Vector2(texture.normalizeX(this.uvX), texture.normalizeY(this.uvMaxY));
+			uvFour = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvMaxY));*/
+			uvOne = new Vector2(texture.normalizeX(this.uvX), texture.normalizeYFlipped(this.uvMaxY));
+			uvTwo = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeYFlipped(this.uvMaxY));
+			uvThree = new Vector2(texture.normalizeX(this.uvX), texture.normalizeYFlipped(this.uvY));
+			uvFour = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeYFlipped(this.uvY));
 			
 			buffer.put(Batch2DRenderer.packVertex(vertexOne, uvOne, overrideColor));
 			buffer.put(Batch2DRenderer.packVertex(vertexTwo, uvTwo, overrideColor));

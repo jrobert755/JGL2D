@@ -22,6 +22,20 @@ public class Texture extends GLObject{
 		this.dirty = true;
 		this.generated = false;
 	}
+	
+	public Texture(int textureHandle, int width, int height){
+		this.data = null;
+		this.handle = textureHandle;
+		this.width = width;
+		this.height = height;
+		if(textureHandle == -1){
+			this.dirty = true;
+			this.generated = false;
+		} else{
+			this.dirty = false;
+			this.generated = true;
+		}
+	}
 
 	public int[] getData() {
 		return data;
@@ -78,7 +92,8 @@ public class Texture extends GLObject{
 		if(!generated) this.generateTexture();
 		this.bind();
 		
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL13.GL_COMPRESSED_RGBA, this.width, this.height, 0, GL11.GL_RGBA, GL12.GL_UNSIGNED_INT_8_8_8_8, this.data);
+		if(this.data == null) GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 100, 100, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, 0);
+		else GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL13.GL_COMPRESSED_RGBA, this.width, this.height, 0, GL11.GL_RGBA, GL12.GL_UNSIGNED_INT_8_8_8_8, this.data);
 		
 		this.unbind();
 		this.dirty = false;
@@ -94,5 +109,9 @@ public class Texture extends GLObject{
 	
 	public float normalizeY(float y){
 		return y / this.height;
+	}
+	
+	public float normalizeYFlipped(float y){
+		return 1f - this.normalizeY(y);
 	}
 }

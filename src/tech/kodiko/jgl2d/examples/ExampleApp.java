@@ -7,6 +7,7 @@ import java.io.IOException;
 import tech.kodiko.jgl2d.LWJGLApplication;
 import tech.kodiko.jgl2d.event.GLFWEventHandler;
 import tech.kodiko.jgl2d.graphics.Batch2DRenderer;
+import tech.kodiko.jgl2d.graphics.RenderArea;
 import tech.kodiko.jgl2d.graphics.Sprite;
 import tech.kodiko.jgl2d.graphics.Texture;
 import tech.kodiko.jgl2d.graphics.tiles.TileMap;
@@ -65,9 +66,15 @@ public class ExampleApp extends LWJGLApplication {
 		renderer.addRenderable(testAlphaSprite);
 		
 		TileMap tilemap = TileMap.loadTileMap("tilemaps/fixed.yml");
-		renderer.addRenderable(tilemap);
+		//renderer.addRenderable(tilemap);
 		tilemap.getTile(1, 1).setOverrideColor(1f, 0f, 1f, 1f);
 		tilemap.updateTile(1, 1);
+		
+		//RenderArea renderArea = new RenderArea();
+		//renderArea.program = program;
+		RenderArea renderArea = new RenderArea(program, 100, 100);
+		renderArea.addRenderable(tilemap);
+		renderer.addRenderable(renderArea);
 		
 		return true;
 	}

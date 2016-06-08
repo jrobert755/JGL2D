@@ -169,7 +169,7 @@ public class GLSLProgram extends GLObject{
 	}
 	
 	public void setUniformObject(String name, Object uniform){
-		this.setUniformObject(name, uniform, true);
+		this.setUniformObject(name, uniform, false);
 	}
 	
 	public void setOrthoCamera(int width, int height){
