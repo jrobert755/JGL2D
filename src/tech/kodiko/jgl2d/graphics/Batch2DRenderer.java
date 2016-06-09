@@ -79,7 +79,7 @@ public class Batch2DRenderer extends Renderer{
 	
 	@Override
 	public void render(){
-		synchronized(this.program){
+		synchronized(this){
 			if(this.vaoHandle == -1 || this.vboHandle == -1) throw new UninitializedException("Batch renderer uninitialized!");
 			GL11.glClearColor(this.clearColor.getX(), this.clearColor.getY(), this.clearColor.getZ(), this.clearColor.getW());
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer

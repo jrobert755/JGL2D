@@ -161,6 +161,14 @@ public class Window implements Runnable{
 		
 		while(!this.shouldClose()){
 			this.update();
+			//Try to help prevent threads from getting locked out
+			//if they modify the renderer's renderables
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		if(this.renderer != null)

@@ -22,7 +22,7 @@ public abstract class Renderer {
 	}
 	
 	public void addRenderable(Renderable r){
-		synchronized(this.renderables){
+		synchronized(this){
 			if(this.renderables.size() == 0){
 				this.renderables.add(r);
 				return;
@@ -43,7 +43,7 @@ public abstract class Renderer {
 	}
 	
 	public void removeRenderable(Renderable r){
-		synchronized(this.renderables){
+		synchronized(this){
 			this.renderables.remove(r);
 		}
 	}
@@ -63,7 +63,7 @@ public abstract class Renderer {
 	}
 	
 	public void sortRenderables(){
-		synchronized(this.renderables){
+		synchronized(this){
 			this.renderables.sort(new Comparator<Renderable>(){
 				@Override
 				public int compare(Renderable arg0, Renderable arg1) {
