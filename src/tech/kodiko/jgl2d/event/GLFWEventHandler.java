@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 
@@ -76,6 +77,18 @@ public class GLFWEventHandler implements Runnable{
 	 * The Mouse Button handler to be installed to every window.
 	 */
 	private static GLFWMouseButton glfwMouseButtonHandler = new GLFWEventHandler.GLFWMouseButton();
+	
+	private static class GLFWCursorPosition implements GLFWCursorPosCallbackI{
+		@Override
+		public void invoke(long window, double xpos, double ypos) {
+			Event event = new CursorMoveEvent(window, xpos, ypos);
+			GLFWEventHandler.newEvent(event);
+		}
+	}
+	/**
+	 * The Mouse Button handler to be installed to every window.
+	 */
+	private static GLFWCursorPosition glfwCursorPositionHandler = new GLFWEventHandler.GLFWCursorPosition();
 
 	
 	/**
@@ -116,6 +129,7 @@ public class GLFWEventHandler implements Runnable{
 		if(handle == -1) return;
 		GLFW.glfwSetKeyCallback(handle, GLFWEventHandler.glfwKeyHandler);
 		GLFW.glfwSetMouseButtonCallback(handle, GLFWEventHandler.glfwMouseButtonHandler);
+		GLFW.glfwSetCursorPosCallback(handle, GLFWEventHandler.glfwCursorPositionHandler);
 	}
 	
 	private boolean running = false;

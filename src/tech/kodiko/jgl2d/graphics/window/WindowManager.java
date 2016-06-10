@@ -20,6 +20,17 @@ public class WindowManager{
 	private static boolean initialized = false;
 	private static Thread initThread;
 	
+	public static Window getWindow(long handle){
+		return WindowManager.createdWindows.get(new Long(handle));
+	}
+	
+	public static void updateWindows(){
+		for(Entry<Long, Window> entry : WindowManager.createdWindows.entrySet()){
+			Window window = entry.getValue();
+			window.updateCursorState();
+		}
+	}
+	
 	public static int getWindowCount(){
 		return WindowManager.createdWindows.size();
 	}

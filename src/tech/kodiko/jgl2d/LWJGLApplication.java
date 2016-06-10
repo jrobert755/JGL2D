@@ -56,6 +56,7 @@ public abstract class LWJGLApplication {
 			}
 			while(WindowManager.getWindowCount() > 0){
 				loopFunction();
+				WindowManager.updateWindows();
 			}
 			if(multithreadedEvents){
 				handler.end();

@@ -1,5 +1,8 @@
 package tech.kodiko.jgl2d.event;
 
+import tech.kodiko.jgl2d.graphics.window.Window;
+import tech.kodiko.jgl2d.graphics.window.WindowManager;
+
 /**
  * A base class for all events.
  * <p>
@@ -10,24 +13,25 @@ package tech.kodiko.jgl2d.event;
  */
 public abstract class Event {
 	/**
-	 * This is the window handle that the event occurred for.
+	 * This is the window that the event occurred for.
 	 */
-	protected long window;
+	protected Window window;
 	
 	/**
 	 * Default constructor that sets the window handle the event
 	 * was generated for.
-	 * @param window The window handle the event was generated for.
+	 * @param windowHandle The window handle the event was generated for.
 	 */
-	public Event(long window){
-		this.window = window;
+	public Event(long windowHandle){
+		//this.window = window;
+		this.window = WindowManager.getWindow(windowHandle);
 	}
 	
 	/**
 	 * 
-	 * @return The window handle that was associated with the event.
+	 * @return The window that was associated with the event.
 	 */
-	public long getWindow(){
+	public Window getWindow(){
 		return this.window;
 	}
 }

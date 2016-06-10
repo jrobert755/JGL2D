@@ -4,6 +4,8 @@ import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 
 import java.io.IOException;
 
+import org.lwjgl.glfw.GLFW;
+
 import tech.kodiko.jgl2d.LWJGLApplication;
 import tech.kodiko.jgl2d.event.GLFWEventHandler;
 import tech.kodiko.jgl2d.graphics.Batch2DRenderer;
@@ -52,7 +54,8 @@ public class ExampleApp extends LWJGLApplication {
 		renderer.addRenderable(testSprite2);
 		
 		GLFWEventHandler.addEventHandler(new ExampleKeyHandler());
-		GLFWEventHandler.addEventHandler(new ExampleMouseButtonHandler());
+		//GLFWEventHandler.addEventHandler(new ExampleMouseButtonHandler());
+		GLFWEventHandler.addEventHandler(new ExampleMouseHandler(renderer, GLFW.GLFW_MOUSE_BUTTON_1));
 		
 		int data[] = new int[4096];
 		for(int i = 0; i < 4096; i++){

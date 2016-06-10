@@ -22,6 +22,7 @@ import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -39,6 +40,8 @@ public class Window implements Runnable{
 	private Renderer renderer;
 	private boolean shown;
 	private int numberOfSamples;
+	private int cursorState = GLFW.GLFW_CURSOR_NORMAL;
+	private int oldCursorState = GLFW.GLFW_CURSOR_NORMAL;
 	
 	public Window(String title, int width, int height, long monitor, boolean fullscreen, int numberOfSamples){
 		// Configure our window
@@ -151,6 +154,7 @@ public class Window implements Runnable{
 		}
 		
 		this.swapBuffers();
+		GLFW.glfwSetInputMode(this.getHandle(), GLFW.GLFW_CURSOR, this.cursorState);
 	}
 
 	@Override
@@ -173,5 +177,18 @@ public class Window implements Runnable{
 		
 		if(this.renderer != null)
 			this.renderer.destroy();
+	}
+	
+	public void setCursorState(int cursorState){
+		if(cursorState != GLFW.GLFW_CURSOR_NORMAL && cursorState != GLFW.GLFW_CURSOR_HIDDEN && cursorState != GLFW.GLFW_CURSOR_DISABLED)
+			return;
+		
+		this.cursorState = cursorState;
+	}
+	
+	public void updateCursorState(){
+		if(cursorState == oldCursorState) return;
+		GLFW.glfwSetInputMode(this.getHandle(), GLFW.GLFW_CURSOR, this.cursorState);
+		this.oldCursorState = this.cursorState;
 	}
 }
