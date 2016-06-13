@@ -12,7 +12,7 @@ import tech.kodiko.jgl2d.graphics.Batch2DRenderer;
 import tech.kodiko.jgl2d.graphics.RenderArea;
 import tech.kodiko.jgl2d.graphics.Sprite;
 import tech.kodiko.jgl2d.graphics.Texture;
-import tech.kodiko.jgl2d.graphics.tiles.TileMap;
+import tech.kodiko.jgl2d.graphics.tile.TileMap;
 import tech.kodiko.jgl2d.graphics.window.Window;
 import tech.kodiko.jgl2d.graphics.window.WindowManager;
 import tech.kodiko.jgl2d.math.Vector2;
@@ -33,8 +33,8 @@ public class ExampleApp extends LWJGLApplication {
 		String vertexSource;
 		String fragmentSource;
 		try {
-			vertexSource = ResourceLoader.getResourceFileContents("defaultVertexShader.shader");
-			fragmentSource = ResourceLoader.getResourceFileContents("defaultFragmentShader.shader");
+			vertexSource = ResourceLoader.getResourceFileContentsAsString("defaultVertexShader.shader");
+			fragmentSource = ResourceLoader.getResourceFileContentsAsString("defaultFragmentShader.shader");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
@@ -68,15 +68,9 @@ public class ExampleApp extends LWJGLApplication {
 		testAlphaSprite.setRotationDegrees(30f);
 		renderer.addRenderable(testAlphaSprite);
 		
-		TileMap tilemap = TileMap.loadTileMap("tilemaps/fixed.yml");
-		//renderer.addRenderable(tilemap);
-		tilemap.getTile(1, 1).setOverrideColor(1f, 0f, 1f, 1f);
-		tilemap.updateTile(1, 1);
-		
-		//RenderArea renderArea = new RenderArea();
-		//renderArea.program = program;
+		TileMap tmn = TileMap.loadTileMap("mono");
 		RenderArea renderArea = new RenderArea(program, 100, 100);
-		renderArea.addRenderable(tilemap);
+		renderArea.addRenderable(tmn);
 		renderer.addRenderable(renderArea);
 		
 		return true;

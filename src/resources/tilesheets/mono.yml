@@ -1,0 +1,17 @@
+textureSheet: textures/Mono_0.png
+numberOfTiles: 254
+tileWidth: 16
+tileHeight: 32
+additionalTiles:
+    - originalStart: 0
+      overrideColor:
+         red: 1.0
+         green: 0.0
+         blue: 1.0
+         alpha: 1.0
+    - originalTiles: [ 1, 2, 3, 6 ]
+      overrideColor:
+         red: 0.0
+         green: 0.0
+         blue: 1.0
+         alpha: 1.0
