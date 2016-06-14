@@ -21,6 +21,7 @@ public class RenderArea extends Sprite {
 		this.renderer = new Batch2DRenderer(program);
 		this.program = program;
 		this.initialized = false;
+		this.setCameraIndependent(true);
 	}
 	
 	public void initialize(){

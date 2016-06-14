@@ -19,6 +19,7 @@ public class Sprite extends Renderable{
 	private float rotation;
 	private boolean clockwiseRotation;
 	private Vector4 overrideColor;
+	private boolean cameraIndependent;
 	
 	/*
 	 * When using GL_TRIANGLE_STRIP, do the vertices in the following order:
@@ -34,7 +35,8 @@ public class Sprite extends Renderable{
 	
 	public Sprite(Texture texture, int vertX, int vertY, int vertWidth, int vertHeight, int uvX, int uvY, int uvWidth, int uvHeight){
 		this.texture = texture;
-		this.buffer = BufferUtils.createFloatBuffer(8*4);
+		//this.buffer = BufferUtils.createFloatBuffer(8*4);
+		this.buffer = BufferUtils.createFloatBuffer(Sprite.floatsPerVertex()*4);
 		this.vertX = vertX;
 		this.vertY = vertY;
 		this.vertWidth = vertWidth;
@@ -43,6 +45,7 @@ public class Sprite extends Renderable{
 		this.rotation = 0;
 		this.clockwiseRotation = false;
 		this.overrideColor = new Vector4(1f, 1f, 1f, 0f);
+		this.cameraIndependent = false;
 		this.updateBuffer();
 	}
 	
@@ -90,9 +93,13 @@ public class Sprite extends Renderable{
 			uvFour = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeYFlipped(this.uvY));
 			
 			buffer.put(Batch2DRenderer.packVertex(vertexOne, uvOne, overrideColor));
+			buffer.put(this.cameraIndependent ? 1f : 0f);
 			buffer.put(Batch2DRenderer.packVertex(vertexTwo, uvTwo, overrideColor));
+			buffer.put(this.cameraIndependent ? 1f : 0f);
 			buffer.put(Batch2DRenderer.packVertex(vertexThree, uvThree, overrideColor));
+			buffer.put(this.cameraIndependent ? 1f : 0f);
 			buffer.put(Batch2DRenderer.packVertex(vertexFour, uvFour, overrideColor));
+			buffer.put(this.cameraIndependent ? 1f : 0f);
 			
 			buffer.flip();
 		}
@@ -207,7 +214,15 @@ public class Sprite extends Renderable{
 		}
 	}
 	
+	public void setCameraIndependent(boolean cameraIndependent){
+		synchronized(this){
+			this.cameraIndependent = cameraIndependent;
+			this.updateBuffer();
+		}
+	}
+	
 	public static int floatsPerVertex(){
-		return 8;
+		//return 8;
+		return 9;
 	}
 }

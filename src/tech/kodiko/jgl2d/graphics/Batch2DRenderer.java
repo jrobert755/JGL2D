@@ -47,19 +47,32 @@ public class Batch2DRenderer extends Renderer{
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboHandle);
 		
 		//2 for vertex, 2 for uv, 4 for override color
-		int numberOfItems = 2 + 2 + 4;
+		//int numberOfItems = 2 + 2 + 4;
+		//2 for vertex, 2 for uv, 4 for override color, 1 for camera independence
+		int numberOfItems = 2 + 2 + 4 + 1;
 		int stride = numberOfItems * 4;
 		
+		/*
 		//Vertex Coordinate
 		GL20.glVertexAttribPointer(0, 2, GL11.GL_FLOAT, false, stride, 0l);
 		//UV Coordinate
 		GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, stride, 2 * 4);
 		//Override color
 		GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, stride, 4 * 4);
+		*/
+		//Vertex Coordinate
+		GL20.glVertexAttribPointer(0, 2, GL11.GL_FLOAT, false, stride, 0l);
+		//UV Coordinate
+		GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, stride, 2 * 4);
+		//Override color
+		GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, stride, 4 * 4);
+		//Camera Independent
+		GL20.glVertexAttribPointer(3, 1, GL11.GL_FLOAT, false, stride, 8 * 4);
 		
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
 		GL20.glEnableVertexAttribArray(2);
+		GL20.glEnableVertexAttribArray(3);
 		GL30.glBindVertexArray(0);
 		
 		//Alpha blending
