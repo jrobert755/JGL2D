@@ -4,9 +4,7 @@ import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
@@ -25,12 +23,14 @@ public class Batch2DRenderer extends Renderer{
 	private GLSLProgram program;
 	private Vector2 camera;
 	private Vector4 clearColor;
+	private float[] data;
 	
 	public Batch2DRenderer(GLSLProgram program){
 		super();
 		this.vaoHandle = -1;
 		this.vboHandle = -1;
 		this.program = program;
+		this.data = null;
 	}
 	
 	@Override
@@ -86,10 +86,6 @@ public class Batch2DRenderer extends Renderer{
 			
 			if(renderables.size() == 0) return;
 			
-			/*program.begin();
-			this.program.setCameraPosition(this.camera);
-			program.setSampler(0);*/
-			
 			ArrayList<Float> values = new ArrayList<Float>();
 			
 			Object[] ren = this.renderables.toArray();
@@ -102,14 +98,18 @@ public class Batch2DRenderer extends Renderer{
 				for(int j = 0; j < data.length; j++) values.add(data[j]);
 			}
 			
-			float data[] = new float[values.size()];
-			for(int i = 0; i < values.size(); i++){
-				data[i] = values.get(i);
+			boolean needsUpdate = false;
+			if(this.data == null || values.size() != this.data.length){
+				this.data = new float[values.size()];
+				needsUpdate = true;
 			}
 			
-			FloatBuffer buffer = BufferUtils.createFloatBuffer(values.size());
-			buffer.put(data);
-			buffer.flip();
+			for(int i = 0; i < values.size(); i++){
+				if(!needsUpdate && this.data[i] != values.get(i)){
+					needsUpdate = true;
+				}
+				this.data[i] = values.get(i);
+			}
 			
 			program.begin();
 			this.program.setCameraPosition(this.camera);
@@ -118,7 +118,7 @@ public class Batch2DRenderer extends Renderer{
 			GL30.glBindVertexArray(this.vaoHandle);
 			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboHandle);
 			
-			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_DYNAMIC_DRAW);
+			if(needsUpdate) GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_DYNAMIC_DRAW);
 			
 			int location = 0;
 			for(int i = 0; i < this.renderables.size(); i++){
