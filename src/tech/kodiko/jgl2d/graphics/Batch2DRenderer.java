@@ -172,19 +172,6 @@ public class Batch2DRenderer extends Renderer{
 			this.program.setCameraPosition(this.camera);
 		}*/
 	}
-	
-	public static float[] packVertex(Vector2 coords, Vector2 uvCoords, Vector4 overrideColor){
-		float data[] = new float[8];
-		data[0] = coords.getX();
-		data[1] = coords.getY();
-		data[2] = uvCoords.getX();
-		data[3] = uvCoords.getY();
-		data[4] = overrideColor.getX();
-		data[5] = overrideColor.getY();
-		data[6] = overrideColor.getZ();
-		data[7] = overrideColor.getW();
-		return data;
-	}
 
 	public int getVaoHandle() {
 		return vaoHandle;

@@ -92,14 +92,10 @@ public class Sprite extends Renderable{
 			uvThree = new Vector2(texture.normalizeX(this.uvX), texture.normalizeYFlipped(this.uvY));
 			uvFour = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeYFlipped(this.uvY));
 			
-			buffer.put(Batch2DRenderer.packVertex(vertexOne, uvOne, overrideColor));
-			buffer.put(this.cameraIndependent ? 1f : 0f);
-			buffer.put(Batch2DRenderer.packVertex(vertexTwo, uvTwo, overrideColor));
-			buffer.put(this.cameraIndependent ? 1f : 0f);
-			buffer.put(Batch2DRenderer.packVertex(vertexThree, uvThree, overrideColor));
-			buffer.put(this.cameraIndependent ? 1f : 0f);
-			buffer.put(Batch2DRenderer.packVertex(vertexFour, uvFour, overrideColor));
-			buffer.put(this.cameraIndependent ? 1f : 0f);
+			buffer.put(Sprite.packVertex(vertexOne, uvOne, overrideColor, this.cameraIndependent));
+			buffer.put(Sprite.packVertex(vertexTwo, uvTwo, overrideColor, this.cameraIndependent));
+			buffer.put(Sprite.packVertex(vertexThree, uvThree, overrideColor, this.cameraIndependent));
+			buffer.put(Sprite.packVertex(vertexFour, uvFour, overrideColor, this.cameraIndependent));
 			
 			buffer.flip();
 		}
@@ -224,5 +220,19 @@ public class Sprite extends Renderable{
 	public static int floatsPerVertex(){
 		//return 8;
 		return 9;
+	}
+	
+	public static float[] packVertex(Vector2 coords, Vector2 uvCoords, Vector4 overrideColor, boolean cameraIndependent){
+		float data[] = new float[Sprite.floatsPerVertex()];
+		data[0] = coords.getX();
+		data[1] = coords.getY();
+		data[2] = uvCoords.getX();
+		data[3] = uvCoords.getY();
+		data[4] = overrideColor.getX();
+		data[5] = overrideColor.getY();
+		data[6] = overrideColor.getZ();
+		data[7] = overrideColor.getW();
+		data[8] = cameraIndependent ? 1f : 0f;
+		return data;
 	}
 }
