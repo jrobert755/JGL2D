@@ -33,20 +33,13 @@ public class Sprite extends Renderable{
 	 */
 	
 	public Sprite(Texture texture, int vertX, int vertY, int vertWidth, int vertHeight, int uvX, int uvY, int uvWidth, int uvHeight){
-		int textureWidth = texture.getWidth(), textureHeight = texture.getHeight();
-		
 		this.texture = texture;
+		this.buffer = BufferUtils.createFloatBuffer(8*4);
 		this.vertX = vertX;
 		this.vertY = vertY;
 		this.vertWidth = vertWidth;
 		this.vertHeight = vertHeight;
-		this.uvX = uvX;
-		this.uvY = uvY;
-		this.uvMaxX = uvWidth + uvX;
-		if(this.uvMaxX > textureWidth) this.uvMaxX = textureWidth;
-		this.uvMaxY = uvHeight + uvY;
-		if(this.uvMaxY > textureHeight) this.uvMaxY = textureHeight;
-		this.buffer = BufferUtils.createFloatBuffer(8*4);
+		this.setUV(uvX, uvY, uvWidth, uvHeight);
 		this.rotation = 0;
 		this.clockwiseRotation = false;
 		this.overrideColor = new Vector4(1f, 1f, 1f, 0f);
@@ -91,14 +84,6 @@ public class Sprite extends Renderable{
 			}
 			
 			Vector2 uvOne, uvTwo, uvThree, uvFour;
-			/*uvOne = new Vector2(texture.normalizeX(this.uvX), texture.normalizeY(this.uvMaxY));
-			uvTwo = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvMaxY));
-			uvThree = new Vector2(texture.normalizeX(this.uvX), texture.normalizeY(this.uvY));
-			uvFour = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvY));*/
-			/*uvOne = new Vector2(texture.normalizeX(this.uvX), texture.normalizeY(this.uvY));
-			uvTwo = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvY));
-			uvThree = new Vector2(texture.normalizeX(this.uvX), texture.normalizeY(this.uvMaxY));
-			uvFour = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeY(this.uvMaxY));*/
 			uvOne = new Vector2(texture.normalizeX(this.uvX), texture.normalizeYFlipped(this.uvMaxY));
 			uvTwo = new Vector2(texture.normalizeX(this.uvMaxX), texture.normalizeYFlipped(this.uvMaxY));
 			uvThree = new Vector2(texture.normalizeX(this.uvX), texture.normalizeYFlipped(this.uvY));
@@ -186,6 +171,22 @@ public class Sprite extends Renderable{
 	public void setRotationDirection(boolean clockwise){
 		this.clockwiseRotation = clockwise;
 	}
+	
+	public void setUV(float uvX, float uvY, float uvWidth, float uvHeight){
+		synchronized(this){
+			int textureWidth = texture.getWidth(), textureHeight = texture.getHeight();
+			this.uvX = uvX;
+			this.uvY = uvY;
+			this.uvMaxX = uvWidth + uvX;
+			if(this.uvMaxX > textureWidth) this.uvMaxX = textureWidth;
+			this.uvMaxY = uvHeight + uvY;
+			if(this.uvMaxY > textureHeight) this.uvMaxY = textureHeight;
+			
+			//This is a hack; if being called from the constructor, skip this update
+			//because the constructor will update at end
+			if(this.overrideColor != null) this.updateBuffer();
+		}
+	}
 
 	@Override
 	public void destroy() {
@@ -193,13 +194,17 @@ public class Sprite extends Renderable{
 	}
 	
 	public void setOverrideColor(float red, float green, float blue, float alpha){
-		this.overrideColor.setXYZW(red, green, blue, alpha);
-		this.updateBuffer();
+		synchronized(this){
+			this.overrideColor.setXYZW(red, green, blue, alpha);
+			this.updateBuffer();
+		}
 	}
 	
 	public void setOverrideColor(Vector4 overrideColor){
-		this.overrideColor = overrideColor;
-		this.updateBuffer();
+		synchronized(this){
+			this.overrideColor = overrideColor;
+			this.updateBuffer();
+		}
 	}
 	
 	public static int floatsPerVertex(){
