@@ -218,7 +218,6 @@ public class Sprite extends Renderable{
 	}
 	
 	public static int floatsPerVertex(){
-		//return 8;
 		return 9;
 	}
 	

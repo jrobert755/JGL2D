@@ -20,17 +20,23 @@ public class TileMap extends Renderable{
 	private Sprite[][] sprites;
 	private int xOffset, yOffset;
 	
-	public TileMap(TileSheet tilesheet2, Sprite[][] sprites, int xOffset, int yOffset){
+	public TileMap(TileSheet tilesheet2, int[][] tiles, int xOffset, int yOffset){
 		this.tilesheet = tilesheet2;
 		
-		this.sprites = sprites;
-		//this.data = new float[sprites.length * sprites[0].length * Sprite.floatsPerVertex() * 4];
+		this.sprites = new Sprite[tiles.length][tiles[0].length];
 		this.data = new float[this.vertexCount() * Sprite.floatsPerVertex()];
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
+		
+		int tileWidth = tilesheet.getTileWidth();
+		int tileHeight = tilesheet.getTileHeight();
 
 		for(int j = 0; j < sprites.length; j++){
 			for(int i = 0; i < sprites[j].length; i++){
+				int x = i * tileWidth;
+				int y = j * tileHeight;
+				
+				sprites[j][i] = tilesheet.generateSpriteFromTile(tiles[j][i], x, y, tileWidth, tileHeight);
 				this.updateTile(i, j);
 			}
 		}
@@ -140,20 +146,8 @@ public class TileMap extends Renderable{
 				tiles[i][j] = buffer.getInt();
 			}
 		}
-		
-		int tileWidth = tilesheet.getTileWidth(), tileHeight = tilesheet.getTileHeight();
-		
-		Sprite sprites[][] = new Sprite[height][width];
-		for(int i = 0; i < height; i++){
-			for(int j = 0; j < width; j++){
-				int x = j * tileWidth;
-				int y = i * tileHeight;
-				
-				sprites[i][j] = tilesheet.generateSpriteFromTile(tiles[i][j], x, y, tileWidth, tileHeight);
-			}
-		}
-		
-		tilemap = new TileMap(tilesheet, sprites, 0, 0);
+
+		tilemap = new TileMap(tilesheet, tiles, 0, 0);
 		TileMap.tilemaps.put(tilemapName, tilemap);
 		return tilemap;
 	}
