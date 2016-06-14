@@ -14,7 +14,6 @@ import tech.kodiko.jgl2d.util.ResourceLoader;
 public class TileMap extends Renderable{
 	private static HashMap<String, TileMap> tilemaps = new HashMap<String, TileMap>();
 	
-	@SuppressWarnings("unused")
 	private TileSheet tilesheet;
 	private float data[];
 	
@@ -84,6 +83,14 @@ public class TileMap extends Renderable{
 				sprites[i][j].destroy();
 			}
 		}
+	}
+	
+	public int getWidth(){
+		return tilesheet.getTileWidth() * this.sprites[0].length;
+	}
+	
+	public int getHeigth(){
+		return tilesheet.getTileHeight() * this.sprites.length;
 	}
 	
 	public static void destroyAll(){

@@ -69,7 +69,8 @@ public class ExampleApp extends LWJGLApplication {
 		renderer.addRenderable(testAlphaSprite);
 		
 		TileMap tmn = TileMap.loadTileMap("mono");
-		RenderArea renderArea = new RenderArea(program, 100, 100);
+		//RenderArea renderArea = new RenderArea(program, 100, 100);
+		RenderArea renderArea = new RenderArea(program, tmn.getWidth(), tmn.getHeigth());
 		renderArea.addRenderable(tmn);
 		renderer.addRenderable(renderArea);
 		

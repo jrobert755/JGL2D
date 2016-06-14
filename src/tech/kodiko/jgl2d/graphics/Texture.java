@@ -92,7 +92,7 @@ public class Texture extends GLObject{
 		if(!generated) this.generateTexture();
 		this.bind();
 		
-		if(this.data == null) GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 100, 100, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, 0);
+		if(this.data == null) GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, this.width, this.height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, 0);
 		else GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL13.GL_COMPRESSED_RGBA, this.width, this.height, 0, GL11.GL_RGBA, GL12.GL_UNSIGNED_INT_8_8_8_8, this.data);
 		
 		this.unbind();

@@ -55,8 +55,8 @@ public class RenderArea extends Sprite {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, this.fboHandle);
 		int viewport[] = new int[4];
 		GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewport);
-		GL11.glViewport(0, 0, this.width, this.width);
-		this.program.setOrthoCamera(this.width, this.width);
+		GL11.glViewport(0, 0, this.width, this.height);
+		this.program.setOrthoCamera(this.width, this.height);
 		
 		this.renderer.render();
 		
