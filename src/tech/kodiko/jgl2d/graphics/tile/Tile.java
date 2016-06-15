@@ -37,4 +37,9 @@ public class Tile {
 		if(this.overrideColor != null) sprite.setOverrideColor(this.overrideColor);
 		return sprite;
 	}
+	
+	public void updateSprite(Sprite sprite){
+		sprite.setUV(this.uvX, this.uvY, this.uvWidth, this.uvHeight);
+		if(this.overrideColor != null) sprite.setOverrideColor(this.overrideColor);
+	}
 }

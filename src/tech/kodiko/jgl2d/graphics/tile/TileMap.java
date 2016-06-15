@@ -18,12 +18,14 @@ public class TileMap extends Renderable{
 	private float data[];
 	
 	private Sprite[][] sprites;
+	private int[][] tiles;
 	private int xOffset, yOffset;
 	
 	public TileMap(TileSheet tilesheet2, int[][] tiles, int xOffset, int yOffset){
 		this.tilesheet = tilesheet2;
 		
 		this.sprites = new Sprite[tiles.length][tiles[0].length];
+		this.tiles = tiles;
 		this.data = new float[this.vertexCount() * Sprite.floatsPerVertex()];
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
@@ -54,6 +56,13 @@ public class TileMap extends Renderable{
 				this.data[offset+i] = temp[i];
 			}
 		}
+	}
+	
+	public void changeTileNumber(int x, int y, int newTileNumber){
+		Sprite sprite = this.sprites[y][x];
+		Tile tile = this.tilesheet.getTile(newTileNumber);
+		tile.updateSprite(sprite);
+		this.tiles[y][x] = newTileNumber;
 	}
 	
 	@Override
