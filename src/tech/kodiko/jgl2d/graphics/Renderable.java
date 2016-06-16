@@ -5,7 +5,7 @@ public abstract class Renderable {
 	public abstract float[] getData();
 	public abstract void render(int offset);
 	public abstract int vertexCount();
-	public abstract void destroy();
+	public abstract void destroy(boolean destroyTexture);
 	public int getZ() {
 		return this.z;
 	}

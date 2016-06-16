@@ -14,14 +14,25 @@ public class RenderArea extends Sprite {
 	private GLSLProgram program;
 	private boolean initialized;
 	
+	public RenderArea(GLSLProgram program, int fboWidth, int fboHeight, int renderWidth, int renderHeight){
+		super(new Texture(null, fboWidth, fboHeight), 0, 0, renderWidth, renderHeight);
+		this.width = fboWidth;
+		this.height = fboHeight;
+		this.renderer = new Batch2DRenderer(program);
+		this.program = program;
+		this.initialized = false;
+		this.setCameraIndependent(true);
+	}
+	
 	public RenderArea(GLSLProgram program, int width, int height){
-		super(new Texture(null, width, height));
+		/*super(new Texture(null, width, height));
 		this.width = width;
 		this.height = height;
 		this.renderer = new Batch2DRenderer(program);
 		this.program = program;
 		this.initialized = false;
-		this.setCameraIndependent(true);
+		this.setCameraIndependent(true);*/
+		this(program, width, height, width, height);
 	}
 	
 	public void initialize(){

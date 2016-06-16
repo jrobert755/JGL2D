@@ -192,8 +192,8 @@ public class Sprite extends Renderable{
 	}
 
 	@Override
-	public void destroy() {
-		if(this.texture != null) this.texture.destroy();
+	public void destroy(boolean destroyTexture) {
+		if(destroyTexture && this.texture != null) this.texture.destroy();
 	}
 	
 	public void setOverrideColor(float red, float green, float blue, float alpha){

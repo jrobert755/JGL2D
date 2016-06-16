@@ -16,6 +16,7 @@ public class Tile {
 		this.uvY = uvY;
 		this.uvWidth = uvWidth;
 		this.uvHeight = uvHeight;
+		this.overrideColor = new Vector4(0f, 0f, 0f, 0f);
 	}
 	
 	public Tile(Texture texture, int uvX, int uvY, int uvWidth, int uvHeight, Vector4 overrideColor) {

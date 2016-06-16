@@ -63,6 +63,7 @@ public class TileMap extends Renderable{
 		Tile tile = this.tilesheet.getTile(newTileNumber);
 		tile.updateSprite(sprite);
 		this.tiles[y][x] = newTileNumber;
+		this.updateTile(x, y);
 	}
 	
 	@Override
@@ -91,12 +92,16 @@ public class TileMap extends Renderable{
 	}
 
 	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-		for(int i = 0; i < sprites.length; i++){
-			for(int j = 0; j < sprites[i].length; j++){
-				sprites[i][j].destroy();
+	public void destroy(boolean destroyTexture) {
+		synchronized(this){
+			for(int i = 0; i < sprites.length; i++){
+				for(int j = 0; j < sprites[i].length; j++){
+					sprites[i][j].destroy(false);
+				}
 			}
+			this.sprites = null;
+			this.data = null;
+			this.tiles = null;
 		}
 	}
 	
@@ -111,7 +116,7 @@ public class TileMap extends Renderable{
 	public static void destroyAll(){
 		for(Entry<String, TileMap> entry : TileMap.tilemaps.entrySet()){
 			TileMap tm = entry.getValue();
-			tm.destroy();
+			tm.destroy(false);
 		}
 	}
 	
